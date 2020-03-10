@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 //@WebFilter(urlPatterns = {"/test"})
-@Component
+//@Component
 public class JwtFilter implements Filter {
 
     @Override
@@ -19,9 +19,10 @@ public class JwtFilter implements Filter {
         if (!uri.startsWith("/login")) {
             // 校验token
             String token = request.getHeader("token");
-            if (!JwtUtil.verify(token)) {
+            JwtUtil.verify(token);
+            /*if (!JwtUtil.isValid(token)) {
                 throw new RuntimeException("token不正确");
-            }
+            }*/
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }
