@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.hai.practice.jwt.Result;
 import com.hai.practice.jwt.common.Constant;
 import com.hai.practice.jwt.shrio.JwtToken;
+import com.hai.practice.jwt.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 
@@ -23,6 +24,7 @@ public class ShrioJwtFilter extends BasicHttpAuthenticationFilter {
             //如果存在，则进入 executeLogin 方法执行登入，检查 token 是否正确
             try {
                 executeLogin(request, response);
+                refreshToken(request, response);
             } catch (Exception e) {
                 responseError(response, JSONObject.toJSONString(new Result(401, e.getMessage())));
                 return false;
@@ -50,15 +52,12 @@ public class ShrioJwtFilter extends BasicHttpAuthenticationFilter {
      */
     @Override
     protected boolean isLoginAttempt(ServletRequest request, ServletResponse response) {
-        HttpServletRequest req = (HttpServletRequest) request;
-        String token = req.getHeader(Constant.TOKEN_HEADER_NAME);
-        return token != null;
+        return getToken(request) != null;
     }
 
     @Override
     protected boolean executeLogin(ServletRequest request, ServletResponse response) {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        String token = httpServletRequest.getHeader(Constant.TOKEN_HEADER_NAME);
+        String token = getToken(request);
         JwtToken jwtToken = new JwtToken(token);
         // 提交给realm进行登入，如果错误它会抛出异常并被捕获
         getSubject(request, response).login(jwtToken);
@@ -99,6 +98,19 @@ public class ShrioJwtFilter extends BasicHttpAuthenticationFilter {
             httpServletResponse.getWriter().write(message);
         } catch (IOException e) {
             log.error("shrio返回特定错误信息时出错", e);
+        }
+    }
+
+    private String getToken(ServletRequest request){
+        HttpServletRequest req = (HttpServletRequest) request;
+        return req.getHeader(Constant.TOKEN_HEADER_NAME);
+    }
+
+    private void refreshToken(ServletRequest request, ServletResponse response){
+        String refreshToken = JwtUtil.refreshToken(getToken(request));
+        if (refreshToken != null) {
+            HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+            httpServletResponse.setHeader("refreshToken", refreshToken);
         }
     }
 
