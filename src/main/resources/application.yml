@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    # 不指定时区会报错
+    url: jdbc:mysql://127.0.0.1:3306/oauth?serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+mybatis-plus:
+  mapper-locations: classpath:mapper/system/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

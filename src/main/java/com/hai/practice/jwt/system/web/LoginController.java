@@ -1,7 +1,12 @@
 package com.hai.practice.jwt.system.web;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.hai.practice.jwt.Result;
+import com.hai.practice.jwt.system.entity.SysUser;
+import com.hai.practice.jwt.system.mapper.SysUserMapper;
 import com.hai.practice.jwt.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,18 +18,22 @@ import java.util.Objects;
 @Slf4j
 public class LoginController {
 
+    @Autowired
+    private SysUserMapper sysUserMapper;
+
     @RequestMapping("login")
     public Object login(String userName, String passWord){
         log.info("---------------login,userName={},passWord={}", userName, passWord);
-        Map<String, Object> map = new HashMap<>();
-        // TODO 连数据库
-        if (Objects.equals("admin", userName) && Objects.equals("admin123", passWord)) {
-            map.put("msg", "登陆成功");
-            map.put("token", JwtUtil.sign(userName, 1));
-            return map;
+        QueryWrapper<SysUser> query = new QueryWrapper<SysUser>().eq("user_name", userName);
+        SysUser sysUser = sysUserMapper.selectOne(query);
+        if (sysUser == null) {
+           return Result.error("账号不存在");
         }
-
-        map.put("msg", "用户或密码错误");
+        if (!Objects.equals(sysUser.getPassWord(), passWord)) {
+            return Result.error("密码不正确");
+        }
+        Map<String,Object> map = new HashMap<>();
+        map.put("token", JwtUtil.sign(sysUser.getUserName(), sysUser.getUserId()));
         return map;
     }
 

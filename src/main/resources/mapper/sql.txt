@@ -1,0 +1,38 @@
+CREATE TABLE `sys_user` (
+  `user_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(255) DEFAULT NULL,
+  `pass_word` varchar(255) DEFAULT NULL COMMENT '密码',
+  `create_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sys_role` (
+  `role_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `role_name` varchar(255) NOT NULL,
+  `create_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`role_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sys_user_role` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) NOT NULL,
+  `role_id` bigint(20) NOT NULL,
+  `create_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sys_permission` (
+  `permission_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `permission` varchar(255) NOT NULL COMMENT '权限',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`permission_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sys_role_permission` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `role_id` bigint(20) NOT NULL,
+  `permission_id` bigint(20) NOT NULL,
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;

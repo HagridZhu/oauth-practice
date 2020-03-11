@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface UserService {
 
-    List<String> listRole(String loginName);
-    List<String> listStringPermission(String loginName);
+    List<String> listRole(Long userId);
+    List<String> listStringPermission(Long userId);
 }

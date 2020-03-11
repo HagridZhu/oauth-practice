@@ -34,10 +34,10 @@ public class JwtRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         String jwtToken = (String)principalCollection.getPrimaryPrincipal();
-        String userName = JwtUtil.getUserName(jwtToken);
+        Long userId = JwtUtil.getUserId(jwtToken);
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        simpleAuthorizationInfo.addRoles(userService.listRole(userName));
-        simpleAuthorizationInfo.addStringPermissions(userService.listStringPermission(userName));
+        simpleAuthorizationInfo.addRoles(userService.listRole(userId));
+        simpleAuthorizationInfo.addStringPermissions(userService.listStringPermission(userId));
         return simpleAuthorizationInfo;
     }
 
