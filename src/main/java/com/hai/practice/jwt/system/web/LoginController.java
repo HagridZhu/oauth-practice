@@ -23,14 +23,14 @@ public class LoginController {
     private SysUserMapper sysUserMapper;
 
     @RequestMapping("login")
-    public Object login(String userName, String passWord){
-        log.info("---------------login,userName={},passWord={}", userName, passWord);
+    public Object login(String userName, String password){
+        log.info("---------------login,userName={},password={}", userName, password);
         QueryWrapper<SysUser> query = new QueryWrapper<SysUser>().eq("user_name", userName);
         SysUser sysUser = sysUserMapper.selectOne(query);
         if (sysUser == null) {
            return Result.error("账号不存在");
         }
-        if (!Objects.equals(sysUser.getPassWord(), passWord)) {
+        if (!Objects.equals(sysUser.getPassword(), password)) {
             return Result.error("密码不正确");
         }
         Map<String,Object> map = new HashMap<>();

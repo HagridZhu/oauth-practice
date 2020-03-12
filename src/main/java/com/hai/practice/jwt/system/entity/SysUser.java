@@ -8,7 +8,7 @@ import java.util.Date;
 public class SysUser {
     private Long userId;
     private String userName;
-    private String passWord;
+    private String password;
     private Date createDate;
 
 }
