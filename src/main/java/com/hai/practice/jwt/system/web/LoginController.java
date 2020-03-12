@@ -16,6 +16,7 @@ import java.util.Objects;
 
 @RestController
 @Slf4j
+@RequestMapping("oauth/api")
 public class LoginController {
 
     @Autowired

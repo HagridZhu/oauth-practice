@@ -110,7 +110,8 @@ public class ShrioJwtFilter extends BasicHttpAuthenticationFilter {
         String refreshToken = JwtUtil.refreshToken(getToken(request));
         if (refreshToken != null) {
             HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-            httpServletResponse.setHeader("refreshToken", refreshToken);
+            httpServletResponse.setHeader("Access-Control-Expose-Headers", Constant.REFRESH_TOKEN_HEADER_NAME);
+            httpServletResponse.setHeader(Constant.REFRESH_TOKEN_HEADER_NAME, refreshToken);
         }
     }
 
