@@ -33,9 +33,8 @@ public class LoginController {
         if (!Objects.equals(sysUser.getPassword(), password)) {
             return Result.error("密码不正确");
         }
-        Map<String,Object> map = new HashMap<>();
-        map.put("token", JwtUtil.sign(sysUser.getUserName(), sysUser.getUserId()));
-        return map;
+        String token = JwtUtil.sign(sysUser.getUserName(), sysUser.getUserId());
+        return Result.success("token", token);
     }
 
 
