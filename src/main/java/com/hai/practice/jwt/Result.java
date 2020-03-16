@@ -10,12 +10,12 @@ import lombok.NoArgsConstructor;
 public class Result<T> {
 
 
-    private int status;
+    private int code;
     private String message;
     private T data;
 
-    public Result(int status, String message){
-        this.status = status;
+    public Result(int code, String message){
+        this.code = code;
         this.message = message;
     }
 
